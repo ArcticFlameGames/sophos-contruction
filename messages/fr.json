@@ -1,0 +1,50 @@
+{
+  "metadata": {
+    "title": "Sophos Construction | Services de Construction Professionnels",
+    "description": "Sophos Construction offre des services professionnels de construction et de rénovation pour les propriétés résidentielles et commerciales. Travail de qualité et service exceptionnel.",
+    "keywords": "construction, rénovation, bâtiment, entrepreneur, entreprise de construction, rénovation résidentielle, construction commerciale, services de construction"
+  },
+  "navigation": {
+    "home": "Accueil",
+    "services": "Nos Services",
+    "projects": "Projets",
+    "about": "À Propos",
+    "contact": "Contact",
+    "language": "Langue",
+    "french": "Français",
+    "english": "Anglais"
+  },
+  "theme": {
+    "light": "Clair",
+    "dark": "Sombre",
+    "system": "Système"
+  },
+  "home": {
+    "welcome": "Construire Votre Vision, Une Brique à la Fois",
+    "professionalServices": "Services professionnels de construction et de rénovation pour les propriétés résidentielles et commerciales",
+    "getQuote": "Obtenir un Devis Gratuit",
+    "ourServices": "Nos Services",
+    "construction": {
+      "title": "Nouvelle Construction",
+      "description": "Du concept à la réalisation, nous construisons des structures de haute qualité qui résistent à l'épreuve du temps."
+    },
+    "renovation": {
+      "title": "Rénovation & Aménagement",
+      "description": "Transformez votre espace avec nos services de rénovation sur mesure adaptés à vos besoins."
+    },
+    "consulting": {
+      "title": "Conseil",
+      "description": "Conseils d'experts et gestion de projet pour assurer le succès de votre projet de construction."
+    },
+    "readyToStart": "Prêt à Démarrer Votre Projet ?",
+    "contactUsToday": "Contactez-nous dès aujourd'hui pour une consultation gratuite et un devis.",
+    "contactUs": "Nous Contacter"
+  },
+  "errors": {
+    "somethingWentWrong": "Quelque chose s'est mal passé !",
+    "tryAgain": "Veuillez réessayer.",
+    "pageNotFound": "Page Non Trouvée",
+    "pageNotFoundMessage": "La page que vous recherchez n'existe pas.",
+    "goBackHome": "Retour à l'accueil"
+  }
+}

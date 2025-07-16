@@ -1,0 +1,52 @@
+{
+  "metadata": {
+    "title": "Sophos Construction | Professional Construction Services",
+    "description": "Sophos Construction offers professional construction and renovation services for residential and commercial properties. Quality workmanship and exceptional service.",
+    "keywords": "construction, renovation, building, contractor, construction company, home renovation, commercial construction, construction services"
+  },
+  "navigation": {
+    "home": "Home",
+    "services": "Our Services",
+    "projects": "Projects",
+    "about": "About Us",
+    "contact": "Contact",
+    "language": "Language",
+    "french": "French",
+    "english": "English",
+    "welcome": "Welcome to",
+    "professionalServices": "Professional renovation and construction services in the South Shore of Montreal."
+  },
+  "theme": {
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "home": {
+    "welcome": "Building Your Vision, One Brick at a Time",
+    "professionalServices": "Professional construction and renovation services for residential and commercial properties",
+    "getQuote": "Get a Free Quote",
+    "ourServices": "Our Services",
+    "construction": {
+      "title": "New Construction",
+      "description": "From concept to completion, we build high-quality structures that stand the test of time."
+    },
+    "renovation": {
+      "title": "Renovation & Remodeling",
+      "description": "Transform your space with our expert renovation services tailored to your needs."
+    },
+    "consulting": {
+      "title": "Consulting",
+      "description": "Expert advice and project management to ensure your construction project's success."
+    },
+    "readyToStart": "Ready to Start Your Project?",
+    "contactUsToday": "Contact us today for a free consultation and quote.",
+    "contactUs": "Contact Us"
+  },
+  "errors": {
+    "somethingWentWrong": "Something went wrong!",
+    "tryAgain": "Please try again.",
+    "pageNotFound": "Page Not Found",
+    "pageNotFoundMessage": "The page you are looking for does not exist.",
+    "goBackHome": "Go back home"
+  }
+}
