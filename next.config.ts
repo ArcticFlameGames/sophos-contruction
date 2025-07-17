@@ -1,12 +1,7 @@
 import type { NextConfig } from "next";
 import createNextIntlPlugin from 'next-intl/plugin';
 import { join } from 'path';
-import { copyFileSync, existsSync, mkdirSync, cpSync } from 'fs';
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+import { copyFileSync, existsSync, mkdirSync, cpSync, readdirSync, statSync } from 'fs';
 
 // This ensures the messages directory is included in the output
 const copyMessages = () => {
@@ -25,32 +20,44 @@ const copyMessages = () => {
     
     // Copy all files from messages/ to public/messages/
     if (existsSync(messagesDir)) {
-      const fs = require('fs');
-      const path = require('path');
-      
-      // Copy each file individually
-      fs.readdirSync(messagesDir).forEach((file: string) => {
-        const srcPath = path.join(messagesDir, file);
-        const destPath = path.join(outputDir, file);
+      const copyRecursiveSync = (src: string, dest: string) => {
+        const entries = readdirSync(src, { withFileTypes: true });
         
-        // If it's a directory, copy it recursively
-        if (fs.statSync(srcPath).isDirectory()) {
-          cpSync(srcPath, destPath, { recursive: true });
-        } else if (file.endsWith('.json')) {
-          // Only copy JSON files
-          fs.copyFileSync(srcPath, destPath);
+        for (const entry of entries) {
+          const srcPath = join(src, entry.name);
+          const destPath = join(dest, entry.name);
+          
+          if (entry.isDirectory()) {
+            if (!existsSync(destPath)) {
+              mkdirSync(destPath, { recursive: true });
+            }
+            copyRecursiveSync(srcPath, destPath);
+          } else if (entry.isFile() && entry.name.endsWith('.json')) {
+            copyFileSync(srcPath, destPath);
+            console.log(`Copied ${srcPath} to ${destPath}`);
+          }
         }
-      });
+      };
       
-      console.log('Successfully copied messages to public directory');
+      console.log('Starting to copy messages...');
+      copyRecursiveSync(messagesDir, outputDir);
+      console.log('Successfully copied all messages to public directory');
+    } else {
+      console.warn(`Messages directory not found at: ${messagesDir}`);
     }
   } catch (error) {
     console.error('Error copying messages directory:', error);
+    // Don't throw to allow the build to continue
   }
 };
 
 // Execute the copy function when the config is loaded
-copyMessages();
+if (process.env.NODE_ENV === 'production') {
+  console.log('Running in production mode - copying messages...');
+  copyMessages();
+} else {
+  console.log('Running in development mode - skipping message copy (handled by Next.js)');
+}
 
 // Configure next-intl with the i18n configuration
 const withNextIntl = createNextIntlPlugin('./src/lib/i18n.ts');

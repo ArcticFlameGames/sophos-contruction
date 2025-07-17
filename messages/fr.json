@@ -155,6 +155,11 @@
       "description": "Nous vous contacterons dans les 24 heures avec une soumission gratuite."
     }
   },
+  "test": {
+    "welcome": "Bienvenue sur notre page de test !",
+    "greeting": "Bonjour {name} !",
+    "messages": "Vous avez {count, plural, =0 {aucun message} one {# message} other {# messages}}"
+  },
   "errors": {
     "somethingWentWrong": "Quelque chose s'est mal passé !",
     "tryAgain": "Veuillez réessayer.",
