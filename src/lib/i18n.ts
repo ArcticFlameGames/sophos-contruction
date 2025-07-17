@@ -6,8 +6,8 @@ export default getRequestConfig(async ({ locale }) => {
 
   try {
     if (process.env.NODE_ENV === 'production') {
-      const path = require('path');
-      const fs = require('fs/promises');
+      const path = await import('path');
+      const fs = await import('fs/promises');
       const filePath = path.join(process.cwd(), 'public', 'messages', `${locale}.json`);
       const content = await fs.readFile(filePath, 'utf8');
       const messages = JSON.parse(content);

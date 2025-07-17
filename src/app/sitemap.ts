@@ -12,10 +12,8 @@ const routes = [
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  // Base URL from environment variable or default to localhost
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://sophos-construction.vercel.app';
   
-  // Generate sitemap entries for each locale and route
   return locales.flatMap((locale) => {
     return routes.map((route) => ({
       url: `${baseUrl}${locale === defaultLocale ? '' : `/${locale}`}${route.path === '/home' ? '' : route.path}`,

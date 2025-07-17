@@ -5,10 +5,8 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: '*',
       allow: '/',
-      // Disallow admin and API routes
-      disallow: ['/admin/', '/api/'],
+      disallow: ['/api/'],
     },
-    // Sitemap URLs for each language
     sitemap: [
       'https://sophos-construction.vercel.app/sitemap.xml',
       'https://sophos-construction.vercel.app/fr/sitemap.xml',
