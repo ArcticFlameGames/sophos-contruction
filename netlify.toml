@@ -11,16 +11,15 @@
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
-# Include the messages directory in the build output
-[[plugins]]
-  package = "@netlify/plugin-static"
-  [plugins.inputs]
-    directory = "messages"
-    publish = "messages"
-
 # Redirect all /api/messages/* to our i18n function
 [[redirects]]
   from = "/api/messages/*"
   to = "/.netlify/functions/i18n"
   status = 200
   force = true
+
+# Include the messages directory in the build output
+[[headers]]
+  for = "/messages/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"

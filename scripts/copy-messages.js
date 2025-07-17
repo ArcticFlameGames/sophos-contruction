@@ -1,24 +1,57 @@
 const fs = require('fs');
 const path = require('path');
+const { promisify } = require('util');
 
-const messagesDir = path.join(process.cwd(), 'messages');
-const publicDir = path.join(process.cwd(), 'public/messages');
+const copyFile = promisify(fs.copyFile);
+const mkdir = promisify(fs.mkdir);
+const readdir = promisify(fs.readdir);
+const stat = promisify(fs.stat);
 
-// Create public/messages directory if it doesn't exist
-if (!fs.existsSync(publicDir)) {
-  fs.mkdirSync(publicDir, { recursive: true });
-}
+async function copyDir(src, dest) {
+  // Create destination directory if it doesn't exist
+  try {
+    await mkdir(dest, { recursive: true });
+  } catch (err) {
+    if (err.code !== 'EEXIST') throw err;
+  }
 
-// Copy all JSON files from messages/ to public/messages/
-if (fs.existsSync(messagesDir)) {
-  fs.readdirSync(messagesDir).forEach(file => {
-    if (file.endsWith('.json')) {
-      const srcPath = path.join(messagesDir, file);
-      const destPath = path.join(publicDir, file);
-      fs.copyFileSync(srcPath, destPath);
-      console.log(`Copied ${file} to ${destPath}`);
+  // Read the source directory
+  const entries = await readdir(src, { withFileTypes: true });
+
+  // Copy each file/directory
+  for (const entry of entries) {
+    const srcPath = path.join(src, entry.name);
+    const destPath = path.join(dest, entry.name);
+
+    if (entry.isDirectory()) {
+      // Recursively copy subdirectories
+      await copyDir(srcPath, destPath);
+    } else if (entry.isFile() && entry.name.endsWith('.json')) {
+      // Only copy JSON files
+      await copyFile(srcPath, destPath);
+      console.log(`Copied ${path.relative(process.cwd(), srcPath)} to ${path.relative(process.cwd(), destPath)}`);
     }
-  });
+  }
 }
 
-console.log('Finished copying message files');
+async function main() {
+  const messagesDir = path.join(process.cwd(), 'messages');
+  const publicDir = path.join(process.cwd(), 'public/messages');
+
+  try {
+    // Check if source directory exists
+    const stats = await stat(messagesDir);
+    if (!stats.isDirectory()) {
+      throw new Error(`Source path ${messagesDir} is not a directory`);
+    }
+
+    console.log(`Copying messages from ${messagesDir} to ${publicDir}`);
+    await copyDir(messagesDir, publicDir);
+    console.log('Successfully copied all message files');
+  } catch (error) {
+    console.error('Error copying messages:', error);
+    process.exit(1);
+  }
+}
+
+main().catch(console.error);
