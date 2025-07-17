@@ -1,8 +1,23 @@
+'use client';
+
 import React from 'react';
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Phone, Mail } from "lucide-react";
+import { ArrowRight, Mail, Phone } from "lucide-react";
+import { useTranslations } from 'next-intl';
 
 export const Hero = () => {
+  const t = useTranslations('home.hero');
+  const tCommon = useTranslations('home');
+  
+  // Debug: Log the translation keys
+  console.log('Hero translations:', {
+    tagline: t('tagline'),
+    subtitle: t('subtitle'),
+    location: t('location'),
+    getQuote: tCommon('getQuote'),
+    viewWork: tCommon('viewWork')
+  });
+
   return (
     <section className="relative min-h-screen flex items-center justify-center bg-gradient-section">
       <div className="absolute inset-0 bg-black/20" />
@@ -16,19 +31,24 @@ export const Hero = () => {
             <span className="text-construction-red">Sophos</span> Construction
           </h1>
           <p className="text-xl md:text-2xl mb-4 text-gray-100 max-w-2xl mx-auto">
-            Professional home renovations and repairs with minimal touch points. 
-            We handle everything so you don't have to.
+            {t('tagline')}
+            <br />
+            <span className="text-lg">{t('subtitle')}</span>
           </p>
           <p className="text-lg mb-8 text-gray-200 max-w-2xl mx-auto">
-            Proudly serving the South Shore of Montreal and surrounding areas
+            {t('location')}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
             <Button variant="hero" size="lg" className="text-lg px-8 py-4">
-              Get Free Quote
+              {tCommon('getQuote')}
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
-            <Button variant="outline-construction" size="lg" className="text-lg px-8 py-4 bg-white/10 backdrop-blur-sm border-white/30 text-white hover:bg-white hover:text-construction-red">
-              View Our Work
+            <Button 
+              variant="outline-construction" 
+              size="lg" 
+              className="text-lg px-8 py-4 bg-white/10 backdrop-blur-sm border-white/30 text-white hover:bg-white hover:text-construction-red"
+            >
+              {tCommon('viewWork')}
             </Button>
           </div>
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center text-sm">

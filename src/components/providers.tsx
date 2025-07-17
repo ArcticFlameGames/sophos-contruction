@@ -9,26 +9,14 @@ import { Toaster } from '@/components/ui/toaster';
 type ClientProvidersProps = {
   children: ReactNode;
   locale: string;
+  messages: any; // We'll use any here for simplicity, but you can define a proper type
 };
 
-export function ClientProviders({ children, locale }: ClientProvidersProps) {
+export function ClientProviders({ children, locale, messages }: ClientProvidersProps) {
   return (
     <NextIntlClientProvider 
       locale={locale}
-      messages={{
-        // These will be provided by next-intl automatically
-        // We just need to satisfy TypeScript
-        navigation: {
-          home: '',
-          services: '',
-          projects: '',
-          about: '',
-          contact: '',
-          language: '',
-          french: '',
-          english: ''
-        }
-      }}
+      messages={messages} // Pass the loaded messages directly
     >
       <ThemeProvider
         attribute="class"

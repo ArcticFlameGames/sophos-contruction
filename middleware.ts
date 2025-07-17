@@ -22,24 +22,27 @@ function getLocale(request: NextRequest): Locale {
 }
 
 export function middleware(request: NextRequest) {
-  // Check if there is any supported locale in the pathname
   const { pathname } = request.nextUrl;
-  const pathnameHasLocale = locales.some(
-    (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
+  
+  // Check if the pathname is missing a locale
+  const pathnameIsMissingLocale = locales.every(
+    (locale) => !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`
   );
 
-  if (pathnameHasLocale) return NextResponse.next();
-
-  // Redirect if there is no locale
-  const locale = getLocale(request);
-  
-  // If the path is just "/", redirect to "/fr/home" or "/en/home"
-  if (pathname === '/') {
-    return NextResponse.redirect(new URL(`/${locale}/home`, request.url));
+  // If no locale is present, redirect to the default locale with the current path
+  if (pathnameIsMissingLocale) {
+    const locale = getLocale(request);
+    
+    // Handle the root path
+    if (pathname === '/') {
+      return NextResponse.redirect(new URL(`/${locale}`, request.url));
+    }
+    
+    // For other paths, preserve the path and add the locale
+    return NextResponse.redirect(new URL(`/${locale}${pathname.startsWith('/') ? '' : '/'}${pathname}`, request.url));
   }
-
-  // Redirect to add the locale
-  return NextResponse.redirect(new URL(`/${locale}${pathname === '/' ? '/home' : pathname}`, request.url));
+  
+  return NextResponse.next();
 }
 
 export const config = {

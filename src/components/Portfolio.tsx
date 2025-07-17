@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Image from "next/image";
+import { useTranslations } from 'next-intl';
 
 // Placeholder images - replace these with your actual images
 const kitchenBefore = "/images/kitchen-before.jpg";
@@ -43,7 +44,7 @@ const portfolioItems = [
   }
 ];
 
-const BeforeAfterCard = ({ item, index }: { item: typeof portfolioItems[0], index: number }) => (
+const BeforeAfterCard = ({ item, index, t }: { item: typeof portfolioItems[0], index: number, t: any }) => (
   <Card 
     className="overflow-hidden hover:shadow-card-custom transition-all duration-300 animate-fade-in"
     style={{ animationDelay: `${index * 200}ms` }}
@@ -59,60 +60,62 @@ const BeforeAfterCard = ({ item, index }: { item: typeof portfolioItems[0], inde
         <div className="relative group">
           <Image
             src={item.before}
-            alt="Before renovation"
+            alt={t('before')}
             width={500}
             height={300}
             className="w-full h-48 object-cover rounded-lg transition-transform duration-300 group-hover:scale-105"
           />
           <div className="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 rounded text-sm font-medium">
-            Before
+            {t('before')}
           </div>
         </div>
         <div className="relative group">
           <Image
             src={item.after}
-            alt="After renovation"
+            alt={t('after')}
             width={500}
             height={300}
             className="w-full h-48 object-cover rounded-lg transition-transform duration-300 group-hover:scale-105"
           />
           <div className="absolute top-2 left-2 bg-green-500 text-white px-2 py-1 rounded text-sm font-medium">
-            After
+            {t('after')}
           </div>
         </div>
       </div>
       <p className="text-muted-foreground mb-2">{item.description}</p>
       <div className="flex justify-between items-center text-sm">
-        <span className="text-construction-red font-medium">Duration: {item.duration}</span>
+        <span className="text-construction-red font-medium">{t('duration')}: {item.duration}</span>
       </div>
     </CardContent>
   </Card>
 );
 
 export const Portfolio = () => {
+  const t = useTranslations('portfolio');
+  
   return (
     <section className="py-20 bg-background">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16 animate-fade-in">
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            Our <span className="text-construction-red">Portfolio</span>
+            {t('title')}
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            See the transformations we've delivered for our satisfied clients.
+            {t('subtitle')}
           </p>
         </div>
 
         <Tabs defaultValue="all" className="w-full">
           <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 max-w-md mx-auto mb-12">
-            <TabsTrigger value="all">All Projects</TabsTrigger>
-            <TabsTrigger value="kitchen">Kitchen</TabsTrigger>
-            <TabsTrigger value="basement">Basement</TabsTrigger>
-            <TabsTrigger value="exterior">Exterior</TabsTrigger>
+            <TabsTrigger value="all">{t('categories.all')}</TabsTrigger>
+            <TabsTrigger value="kitchen">{t('categories.kitchen')}</TabsTrigger>
+            <TabsTrigger value="basement">{t('categories.basement')}</TabsTrigger>
+            <TabsTrigger value="exterior">{t('categories.exterior')}</TabsTrigger>
           </TabsList>
 
           <TabsContent value="all" className="space-y-8">
             {portfolioItems.map((item, index) => (
-              <BeforeAfterCard key={index} item={item} index={index} />
+              <BeforeAfterCard key={index} item={item} index={index} t={t} />
             ))}
           </TabsContent>
 
@@ -120,7 +123,7 @@ export const Portfolio = () => {
             {portfolioItems
               .filter(item => item.category === "kitchen")
               .map((item, index) => (
-                <BeforeAfterCard key={index} item={item} index={index} />
+                <BeforeAfterCard key={index} item={item} index={index} t={t} />
               ))}
           </TabsContent>
 
@@ -128,7 +131,7 @@ export const Portfolio = () => {
             {portfolioItems
               .filter(item => item.category === "basement")
               .map((item, index) => (
-                <BeforeAfterCard key={index} item={item} index={index} />
+                <BeforeAfterCard key={index} item={item} index={index} t={t} />
               ))}
           </TabsContent>
 
@@ -136,7 +139,7 @@ export const Portfolio = () => {
             {portfolioItems
               .filter(item => item.category === "exterior")
               .map((item, index) => (
-                <BeforeAfterCard key={index} item={item} index={index} />
+                <BeforeAfterCard key={index} item={item} index={index} t={t} />
               ))}
           </TabsContent>
         </Tabs>

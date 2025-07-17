@@ -8,8 +8,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Phone, Mail, MapPin, Clock } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useTranslations } from 'next-intl';
 
 export const Contact = () => {
+  const t = useTranslations('contact');
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -23,8 +25,8 @@ export const Contact = () => {
     e.preventDefault();
     // Here you would typically send the form data to your backend
     toast({
-      title: "Thank you for your submission!",
-      description: "We'll get back to you within 24 hours with a free quote.",
+      title: t('toast.title'),
+      description: t('toast.description'),
     });
     setFormData({ name: "", email: "", phone: "", projectType: "", message: "" });
   };
@@ -33,28 +35,34 @@ export const Contact = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  // Get the raw title string and split it to extract the highlighted part
+  const titleParts = t.raw('title').split('<span');
+  const beforeSpan = titleParts[0];
+  const spanContent = titleParts[1] ? `<span${titleParts[1]}` : '';
+
   return (
     <section id="contact" className="py-20 bg-background">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16 animate-fade-in">
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            Start Your <span className="text-construction-red">Project</span>
+            {beforeSpan}
+            <span dangerouslySetInnerHTML={{ __html: spanContent }} />
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Ready to transform your home? Get a free quote today and let's discuss your vision for your South Shore property.
+            {t('subtitle')}
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           <Card className="bg-gradient-card animate-slide-up">
             <CardHeader>
-              <CardTitle className="text-2xl">Get Your Free Quote</CardTitle>
+              <CardTitle className="text-2xl">{t('form.title')}</CardTitle>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="name">Full Name</Label>
+                    <Label htmlFor="name">{t('form.fields.name')}</Label>
                     <Input
                       id="name"
                       name="name"
@@ -65,7 +73,7 @@ export const Contact = () => {
                     />
                   </div>
                   <div>
-                    <Label htmlFor="email">Email</Label>
+                    <Label htmlFor="email">{t('form.fields.email')}</Label>
                     <Input
                       id="email"
                       name="email"
@@ -80,7 +88,7 @@ export const Contact = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="phone">Phone Number</Label>
+                    <Label htmlFor="phone">{t('form.fields.phone')}</Label>
                     <Input
                       id="phone"
                       name="phone"
@@ -92,27 +100,27 @@ export const Contact = () => {
                     />
                   </div>
                   <div>
-                    <Label htmlFor="projectType">Project Type</Label>
+                    <Label htmlFor="projectType">{t('form.fields.projectType')}</Label>
                     <Input
                       id="projectType"
                       name="projectType"
                       value={formData.projectType}
                       onChange={handleChange}
-                      placeholder="e.g., Kitchen Renovation"
+                      placeholder={t('form.placeholders.projectType')}
                       className="mt-1"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <Label htmlFor="message">Project Description</Label>
+                  <Label htmlFor="message">{t('form.fields.message')}</Label>
                   <Textarea
                     id="message"
                     name="message"
                     value={formData.message}
                     onChange={handleChange}
                     rows={4}
-                    placeholder="Tell us about your project..."
+                    placeholder={t('form.placeholders.message')}
                     required
                     className="mt-1"
                   />
@@ -124,7 +132,7 @@ export const Contact = () => {
                   size="lg" 
                   className="w-full bg-construction-red hover:bg-construction-red/90"
                 >
-                  Get Free Quote
+                  {t('form.submit')}
                 </Button>
               </form>
             </CardContent>
@@ -133,23 +141,23 @@ export const Contact = () => {
           <div className="space-y-8 animate-slide-up" style={{ animationDelay: "200ms" }}>
             <Card className="bg-gradient-card">
               <CardContent className="p-8">
-                <h3 className="text-2xl font-bold mb-6">Contact Information</h3>
+                <h3 className="text-2xl font-bold mb-6">{t('contactInfo.title')}</h3>
                 <div className="space-y-4">
                   <div className="flex items-center gap-3">
                     <Phone className="h-5 w-5 text-construction-red" />
-                    <span>(514) 555-0123</span>
+                    <span>{t('contactInfo.phone')}</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <Mail className="h-5 w-5 text-construction-red" />
-                    <span>info@sophosconstruction.com</span>
+                    <span>{t('contactInfo.email')}</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <MapPin className="h-5 w-5 text-construction-red" />
-                    <span>South Shore of Montreal, QC</span>
+                    <span>{t('contactInfo.address')}</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <Clock className="h-5 w-5 text-construction-red" />
-                    <span>Mon-Fri: 7AM-6PM, Sat: 8AM-4PM</span>
+                    <span>{t('contactInfo.hours')}</span>
                   </div>
                 </div>
               </CardContent>
@@ -157,16 +165,16 @@ export const Contact = () => {
 
             <Card className="bg-construction-red text-white">
               <CardContent className="p-8">
-                <h3 className="text-2xl font-bold mb-4">Emergency Repairs</h3>
+                <h3 className="text-2xl font-bold mb-4">{t('emergency.title')}</h3>
                 <p className="mb-4">
-                  Need urgent repairs in the South Shore area? We offer 24/7 emergency services for critical issues.
+                  {t('emergency.description')}
                 </p>
                 <Button 
                   variant="outline" 
                   className="border-white text-white hover:bg-white hover:text-construction-red"
-                  onClick={() => window.location.href = 'tel:5145550123'}
+                  onClick={() => window.location.href = `tel:${t('contactInfo.phone').replace(/[^0-9+]/g, '')}`}
                 >
-                  Call Emergency Line
+                  {t('emergency.button')}
                 </Button>
               </CardContent>
             </Card>
