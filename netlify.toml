@@ -7,9 +7,11 @@
   NODE_VERSION = "20"
   NPM_FLAGS = "--legacy-peer-deps"
 
-# Include the messages directory in the build output
+# Next.js plugin with configuration
 [[plugins]]
   package = "@netlify/plugin-nextjs"
+  [plugins.inputs]
+    include = ["messages/**"]
 
 # Redirect all /api/messages/* to our i18n function
 [[redirects]]
@@ -17,9 +19,3 @@
   to = "/.netlify/functions/i18n"
   status = 200
   force = true
-
-# Include the messages directory in the build output
-[[plugins]]
-  package = "@netlify/plugin-nextjs"
-  [plugins.inputs]
-    include = ["messages/**"]
