@@ -2,36 +2,28 @@
 
 import { ReactNode } from 'react';
 import { NextIntlClientProvider } from 'next-intl';
-import { ThemeProvider } from '@/components/theme-provider';
 import { SiteHeader } from '@/components/site-header';
 import { Toaster } from '@/components/ui/toaster';
 
 type ClientProvidersProps = {
   children: ReactNode;
   locale: string;
-  messages: any; // We'll use any here for simplicity, but you can define a proper type
+  messages: any;
 };
 
 export function ClientProviders({ children, locale, messages }: ClientProvidersProps) {
   return (
     <NextIntlClientProvider 
       locale={locale}
-      messages={messages} // Pass the loaded messages directly
+      messages={messages}
     >
-      <ThemeProvider
-        attribute="class"
-        defaultTheme="light"
-        enableSystem={false}
-        disableTransitionOnChange
-      >
-        <div className="relative flex min-h-screen flex-col">
-          <SiteHeader />
-          <main className="flex-1">
-            {children}
-          </main>
-        </div>
-        <Toaster />
-      </ThemeProvider>
+      <div className="relative flex min-h-screen flex-col bg-white">
+        <SiteHeader />
+        <main className="flex-1">
+          {children}
+        </main>
+      </div>
+      <Toaster />
     </NextIntlClientProvider>
   );
 }

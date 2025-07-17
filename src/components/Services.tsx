@@ -33,7 +33,7 @@ export const Services = () => {
   const spanContent = titleParts[1] ? `<span${titleParts[1]}` : '';
 
   return (
-    <section className="py-20 bg-gradient-section">
+    <section id="services" className="py-20 bg-gradient-section">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16 animate-fade-in">
           <h2 className="text-4xl md:text-5xl font-bold mb-6">

@@ -39,27 +39,31 @@ export const Hero = () => {
             {t('location')}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-            <Button variant="hero" size="lg" className="text-lg px-8 py-4">
-              {tCommon('getQuote')}
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
-            <Button 
-              variant="outline-construction" 
-              size="lg" 
-              className="text-lg px-8 py-4 bg-white/10 backdrop-blur-sm border-white/30 text-white hover:bg-white hover:text-construction-red"
-            >
-              {tCommon('viewWork')}
-            </Button>
+            <a href="#contact" className="w-full sm:w-auto">
+              <Button variant="hero" size="lg" className="text-lg px-8 py-4 w-full">
+                {tCommon('getQuote')}
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </a>
+            <a href="#portfolio" className="w-full sm:w-auto">
+              <Button 
+                variant="outline-construction" 
+                size="lg" 
+                className="text-lg px-8 py-4 w-full bg-white/10 backdrop-blur-sm border-white/30 text-white hover:bg-white hover:text-construction-red"
+              >
+                {tCommon('viewWork')}
+              </Button>
+            </a>
           </div>
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center text-sm">
-            <div className="flex items-center gap-2">
+            <a href="tel:5146067332" className="flex items-center gap-2 hover:underline">
               <Phone className="h-4 w-4" />
-              <span>(514) 555-0123</span>
-            </div>
-            <div className="flex items-center gap-2">
+              <span>(514) 606-7332</span>
+            </a>
+            <a href="mailto:construction.sophos@gmail.com" className="flex items-center gap-2 hover:underline">
               <Mail className="h-4 w-4" />
-              <span>info@sophosconstruction.com</span>
-            </div>
+              <span>construction.sophos@gmail.com</span>
+            </a>
           </div>
         </div>
       </div>

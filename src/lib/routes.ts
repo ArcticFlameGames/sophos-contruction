@@ -17,7 +17,7 @@ export const routes: Route = {
     label: 'navigation.services',
   },
   projects: {
-    href: '/projects',
+    href: '/portfolio',
     label: 'navigation.projects',
   },
   about: {

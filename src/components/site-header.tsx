@@ -3,7 +3,6 @@
 import Link from "next/link"
 import { useTranslations } from 'next-intl';
 import Image from "next/image"
-import { ThemeToggle } from "./theme-toggle"
 import { routes } from "@/lib/routes"
 import { Locale } from "@/i18n-config"
 import { useNavigation } from "@/hooks/use-navigation"
@@ -41,15 +40,31 @@ export function SiteHeader() {
             />
           </Link>
           <nav className="flex items-center space-x-6 text-sm">
-            {navItems.map((item) => (
-              <Link
-                key={item.href}
-                href={createLocalizedUrl(item.href, currentLocale)}
-                className={`transition-colors ${isActivePath(item.href) ? 'text-foreground font-medium' : 'text-foreground/60 hover:text-foreground/80'}`}
-              >
-                {t(item.label.split('.')[1])}
-              </Link>
-            ))}
+            {navItems.map((item) => {
+              const isHome = item.href === routes.home.href;
+              const sectionId = item.href.replace(/^\//, '');
+              const isActive = isActivePath(item.href);
+              
+              if (isHome) return null; // Skip home as it's already handled by the logo
+              
+              return (
+                <a
+                  key={item.href}
+                  href={`#${sectionId}`}
+                  className={`transition-colors ${isActive ? 'text-foreground font-medium' : 'text-foreground/60 hover:text-foreground/80'}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const element = document.getElementById(sectionId);
+                    if (element) {
+                      element.scrollIntoView({ behavior: 'smooth' });
+                      window.history.pushState(null, '', `#${sectionId}`);
+                    }
+                  }}
+                >
+                  {t(item.label.split('.')[1])}
+                </a>
+              );
+            })}
           </nav>
         </div>
         <div className="flex items-center space-x-4">
@@ -78,7 +93,6 @@ export function SiteHeader() {
               EN
             </button>
           </div>
-          <ThemeToggle />
         </div>
       </div>
     </header>

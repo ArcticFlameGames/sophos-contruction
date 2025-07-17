@@ -23,11 +23,25 @@ export const Contact = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would typically send the form data to your backend
+    
+    // Create email subject and body
+    const subject = `New Contact Form Submission from ${formData.name}`;
+    const body = `Name: ${formData.name}%0D%0A` +
+                 `Email: ${formData.email}%0D%0A` +
+                 `Phone: ${formData.phone}%0D%0A` +
+                 `Project Type: ${formData.projectType}%0D%0A%0D%0A` +
+                 `Message:%0D%0A${formData.message}`;
+    
+    // Open default email client with pre-filled email
+    window.location.href = `mailto:construction.sophos@gmail.com?subject=${encodeURIComponent(subject)}&body=${body}`;
+    
+    // Show success toast
     toast({
       title: t('toast.title'),
       description: t('toast.description'),
     });
+    
+    // Reset form
     setFormData({ name: "", email: "", phone: "", projectType: "", message: "" });
   };
 
@@ -41,7 +55,7 @@ export const Contact = () => {
   const spanContent = titleParts[1] ? `<span${titleParts[1]}` : '';
 
   return (
-    <section id="contact" className="py-20 bg-background">
+    <section id="contact" className="py-16 md:py-24 bg-white">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16 animate-fade-in">
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
@@ -143,14 +157,14 @@ export const Contact = () => {
               <CardContent className="p-8">
                 <h3 className="text-2xl font-bold mb-6">{t('contactInfo.title')}</h3>
                 <div className="space-y-4">
-                  <div className="flex items-center gap-3">
+                  <a href={`tel:${t('contactInfo.phone').replace(/[^0-9+]/g, '')}`} className="flex items-center gap-3 hover:underline">
                     <Phone className="h-5 w-5 text-construction-red" />
                     <span>{t('contactInfo.phone')}</span>
-                  </div>
-                  <div className="flex items-center gap-3">
+                  </a>
+                  <a href={`mailto:${t('contactInfo.email')}`} className="flex items-center gap-3 hover:underline">
                     <Mail className="h-5 w-5 text-construction-red" />
                     <span>{t('contactInfo.email')}</span>
-                  </div>
+                  </a>
                   <div className="flex items-center gap-3">
                     <MapPin className="h-5 w-5 text-construction-red" />
                     <span>{t('contactInfo.address')}</span>
@@ -171,7 +185,7 @@ export const Contact = () => {
                 </p>
                 <Button 
                   variant="outline" 
-                  className="border-white text-white hover:bg-white hover:text-construction-red"
+                  className="border-white bg-construction-red text-white hover:bg-construction-red/90 hover:text-white"
                   onClick={() => window.location.href = `tel:${t('contactInfo.phone').replace(/[^0-9+]/g, '')}`}
                 >
                   {t('emergency.button')}

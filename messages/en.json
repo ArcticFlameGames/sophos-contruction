@@ -141,15 +141,15 @@
     },
     "contactInfo": {
       "title": "Contact Information",
-      "phone": "(514) 555-0123",
-      "email": "info@sophosconstruction.com",
+      "phone": "(514) 606-7332",
+      "email": "construction.sophos@gmail.com",
       "address": "South Shore of Montreal, QC",
       "hours": "Mon-Fri: 7AM-6PM, Sat: 8AM-4PM"
     },
     "emergency": {
       "title": "Emergency Repairs",
       "description": "Need urgent repairs in the South Shore area? We offer 24/7 emergency services for critical issues.",
-      "button": "Call Emergency Line"
+      "button": "Call"
     },
     "toast": {
       "title": "Thank you for your submission!",
