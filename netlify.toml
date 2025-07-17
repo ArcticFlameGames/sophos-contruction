@@ -1,0 +1,25 @@
+[build]
+  command = "npm run build"
+  publish = ".next"
+  functions = "netlify/functions"
+
+[build.environment]
+  NODE_VERSION = "20"
+  NPM_FLAGS = "--legacy-peer-deps"
+
+# Include the messages directory in the build output
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+# Redirect all /api/messages/* to our i18n function
+[[redirects]]
+  from = "/api/messages/*"
+  to = "/.netlify/functions/i18n"
+  status = 200
+  force = true
+
+# Include the messages directory in the build output
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+  [plugins.inputs]
+    include = ["messages/**"]
