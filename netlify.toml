@@ -7,17 +7,11 @@
   NODE_VERSION = "20"
   NPM_FLAGS = "--legacy-peer-deps"
 
-# Next.js plugin
-[[plugins]]
-  package = "@netlify/plugin-nextjs"
-
-# Include the messages directory in the build output
 [[plugins]]
   package = "@netlify/plugin-nextjs"
   [plugins.inputs]
     include = ["messages/**"]
 
-# Cache headers for static assets
 [[headers]]
   for = "/*"
   [headers.values]
@@ -25,8 +19,7 @@
     X-Content-Type-Options = "nosniff"
     X-XSS-Protection = "1; mode=block"
     Referrer-Policy = "strict-origin-when-cross-origin"
-    
-# Cache control for static assets
+
 [[headers]]
   for = "/*.js"
   [headers.values]
@@ -49,6 +42,4 @@
 
 [[headers]]
   for = "/messages/*"
-  [headers.values]
-    Cache-Control = "public, max-age=3600, must-revalidate"
-    Access-Control-Allow-Origin = "*"
+  [headers.val]()
