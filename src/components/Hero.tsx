@@ -8,15 +8,6 @@ import { useTranslations } from 'next-intl';
 export const Hero = () => {
   const t = useTranslations('home.hero');
   const tCommon = useTranslations('home');
-  
-  // Debug: Log the translation keys
-  console.log('Hero translations:', {
-    tagline: t('tagline'),
-    subtitle: t('subtitle'),
-    location: t('location'),
-    getQuote: tCommon('getQuote'),
-    viewWork: tCommon('viewWork')
-  });
 
   return (
     <section className="relative min-h-screen flex items-center justify-center bg-gradient-section">
