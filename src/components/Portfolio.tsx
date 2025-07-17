@@ -11,10 +11,10 @@ const kitchenBefore = "/images/kitchen-before.jpg";
 const kitchenAfter = "/images/kitchen-after.jpg";
 const basementBefore = "/images/basement-before.jpg";
 const basementAfter = "/images/basement-after.jpg";
-const exteriorBefore = "/images/exterior-before.jpg";
-const exteriorAfter = "/images/exterior-after.jpg";
+const exteriorBefore = "/images/matts-place/old.jpg";
+const exteriorAfter = "/images/matts-place/new.jpg";
 
-const portfolioItems = [
+const portfolioItems: PortfolioItem[] = [
   {
     category: "kitchen",
     title: "Modern Kitchen Transformation",
@@ -27,7 +27,7 @@ const portfolioItems = [
   {
     category: "basement",
     title: "Basement Family Room",
-    before: basementBefore,
+    // This item doesn't have a before image
     after: basementAfter,
     description: "Unfinished basement converted into a cozy family entertainment space.",
     duration: "4 weeks",
@@ -35,60 +35,76 @@ const portfolioItems = [
   },
   {
     category: "exterior",
-    title: "Exterior Makeover",
+    title: "Deck Transformation",
     before: exteriorBefore,
     after: exteriorAfter,
-    description: "Complete exterior renovation with new siding, windows, and landscaping.",
+    description: "Complete deck renovation with new composite decking and railings. Transformed an old, worn-out deck into a beautiful outdoor living space.",
     duration: "2 weeks",
-    type: "Exterior Renovation"
+    type: "Deck Renovation"
   }
 ];
 
-const BeforeAfterCard = ({ item, index, t }: { item: typeof portfolioItems[0], index: number, t: any }) => (
-  <Card 
-    className="overflow-hidden hover:shadow-card-custom transition-all duration-300 animate-fade-in"
-    style={{ animationDelay: `${index * 200}ms` }}
-  >
-    <CardHeader>
-      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
-        <CardTitle className="text-xl">{item.title}</CardTitle>
-        <Badge variant="secondary" className="w-fit">{item.type}</Badge>
-      </div>
-    </CardHeader>
-    <CardContent>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-        <div className="relative group">
-          <Image
-            src={item.before}
-            alt={t('before')}
-            width={500}
-            height={300}
-            className="w-full h-48 object-cover rounded-lg transition-transform duration-300 group-hover:scale-105"
-          />
-          <div className="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 rounded text-sm font-medium">
-            {t('before')}
+type PortfolioItem = {
+  category: string;
+  title: string;
+  before?: string; // Made before image optional
+  after: string;
+  description: string;
+  duration: string;
+  type: string;
+};
+
+const BeforeAfterCard = ({ item, index, t }: { item: PortfolioItem, index: number, t: any }) => {
+  const hasBeforeImage = item.before !== undefined;
+  
+  return (
+    <Card 
+      className="overflow-hidden hover:shadow-card-custom transition-all duration-300 animate-fade-in"
+      style={{ animationDelay: `${index * 200}ms` }}
+    >
+      <CardHeader>
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
+          <CardTitle className="text-xl">{item.title}</CardTitle>
+          <Badge variant="secondary" className="w-fit">{item.type}</Badge>
+        </div>
+      </CardHeader>
+      <CardContent>
+        <div className={`grid ${hasBeforeImage ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1 max-w-2xl mx-auto'} gap-4 mb-4`}>
+          {hasBeforeImage && (
+            <div className="relative group">
+              <Image
+                src={item.before as string}
+                alt={t('before')}
+                width={600}
+                height={400}
+                className="w-full h-64 md:h-80 object-cover rounded-lg transition-transform duration-300 group-hover:scale-105"
+              />
+              <div className="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 rounded text-sm font-medium">
+                {t('before')}
+              </div>
+            </div>
+          )}
+          <div className="relative group">
+            <Image
+              src={item.after}
+              alt={t('after')}
+              width={600}
+              height={400}
+              className="w-full h-64 md:h-80 object-cover rounded-lg transition-transform duration-300 group-hover:scale-105"
+            />
+            <div className="absolute top-2 left-2 bg-green-500 text-white px-2 py-1 rounded text-sm font-medium">
+              {t(hasBeforeImage ? 'after' : 'project')}
+            </div>
           </div>
         </div>
-        <div className="relative group">
-          <Image
-            src={item.after}
-            alt={t('after')}
-            width={500}
-            height={300}
-            className="w-full h-48 object-cover rounded-lg transition-transform duration-300 group-hover:scale-105"
-          />
-          <div className="absolute top-2 left-2 bg-green-500 text-white px-2 py-1 rounded text-sm font-medium">
-            {t('after')}
-          </div>
+        <p className="text-muted-foreground mb-2">{item.description}</p>
+        <div className="flex justify-between items-center text-sm">
+          <span className="text-construction-red font-medium">{t('duration')}: {item.duration}</span>
         </div>
-      </div>
-      <p className="text-muted-foreground mb-2">{item.description}</p>
-      <div className="flex justify-between items-center text-sm">
-        <span className="text-construction-red font-medium">{t('duration')}: {item.duration}</span>
-      </div>
-    </CardContent>
-  </Card>
-);
+      </CardContent>
+    </Card>
+  );
+};
 
 export const Portfolio = () => {
   const t = useTranslations('portfolio');
