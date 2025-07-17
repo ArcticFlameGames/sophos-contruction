@@ -1,14 +1,14 @@
 import { getRequestConfig } from 'next-intl/server';
 import { notFound } from 'next/navigation';
+import path from 'path';
+import fs from 'fs/promises';
 
 export default getRequestConfig(async ({ locale }) => {
   if (locale !== 'en' && locale !== 'fr') notFound();
 
   try {
     if (process.env.NODE_ENV === 'production') {
-      const path = await import('path');
-      const fs = await import('fs/promises');
-      const filePath = path.join(process.cwd(), 'public', 'messages', `${locale}.json`);
+      const filePath = path.join(process.cwd(), 'public/messages', `${locale}.json`);
       const content = await fs.readFile(filePath, 'utf8');
       const messages = JSON.parse(content);
       return {
