@@ -157,6 +157,11 @@
       "description": "We'll get back to you within 24 hours with a free quote."
     }
   },
+  "test": {
+    "welcome": "Welcome to our test page!",
+    "greeting": "Hello, {name}!",
+    "messages": "You have {count, plural, =0 {no messages} one {# message} other {# messages}}"
+  },
   "errors": {
     "somethingWentWrong": "Something went wrong!",
     "tryAgain": "Please try again.",
