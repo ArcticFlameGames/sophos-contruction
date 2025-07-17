@@ -42,4 +42,6 @@
 
 [[headers]]
   for = "/messages/*"
-  [headers.val]()
+  [headers.values]
+    Cache-Control = "public, max-age=3600, must-revalidate"
+    Access-Control-Allow-Origin = "*"
