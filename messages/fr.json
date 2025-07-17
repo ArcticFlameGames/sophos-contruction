@@ -22,7 +22,7 @@
   "home": {
     "welcome": "Construire Votre Vision, Une Brique à la Fois",
     "professionalServices": "Services professionnels de construction et de rénovation pour les propriétés résidentielles et commerciales",
-    "getQuote": "Obtenir un Devis Gratuit",
+    "getQuote": "Obtenir une Soumission Gratuite",
     "viewWork": "Voir Nos Réalisations",
     "ourServices": "Nos Services",
     "hero": {
@@ -123,7 +123,7 @@
     "title": "Commencez Votre <span class='text-construction-red'>Projet</span>",
     "subtitle": "Prêt à transformer votre maison ? Obtenez une soumission gratuite dès aujourd'hui et discutons de votre vision pour votre propriété sur la Rive-Sud.",
     "form": {
-      "title": "Obtenez Votre Devis Gratuit",
+      "title": "Obtenez Votre Soumission Gratuite",
       "fields": {
         "name": "Nom Complet",
         "email": "Courriel",
@@ -135,7 +135,7 @@
         "projectType": "ex. : Rénovation de cuisine",
         "message": "Décrivez-nous votre projet..."
       },
-      "submit": "Obtenir un Devis Gratuit"
+      "submit": "Obtenir une Soumission Gratuite"
     },
     "contactInfo": {
       "title": "Coordonnées",

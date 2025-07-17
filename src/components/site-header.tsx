@@ -27,15 +27,15 @@ export function SiteHeader() {
   };
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-20 items-center justify-between">
-        <div className="flex items-center space-x-8">
+      <div className="container flex h-16 md:h-20 items-center justify-between px-4">
+        <div className="flex items-center space-x-4 md:space-x-8">
           <Link href={createLocalizedUrl(routes.home.href, currentLocale)} className="flex items-center space-x-3">
             <Image 
               src="/images/logotransparent.png" 
               alt="Sophos Construction" 
               width={150} 
               height={50}
-              className="h-12 w-auto object-contain"
+              className="h-10 w-auto object-contain md:h-12"
               priority
             />
           </Link>

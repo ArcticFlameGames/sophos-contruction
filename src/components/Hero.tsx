@@ -20,11 +20,12 @@ export const Hero = () => {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center bg-gradient-section">
-      <div className="absolute inset-0 bg-black/20" />
+      <div className="absolute inset-0 bg-black/60" />
       <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat mix-blend-overlay"
         style={{ backgroundImage: 'url(/images/hero-construction.jpg)' }}
       />
+      <div className="absolute inset-0 bg-black/30" />
       <div className="relative z-10 container mx-auto px-4 text-center text-white">
         <div className="max-w-4xl mx-auto animate-fade-in">
           <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
