@@ -5,7 +5,6 @@ const withNextIntl = createNextIntlPlugin('./src/lib/i18n.ts');
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-  swcMinify: true,
   images: {
     domains: ['images.unsplash.com', 'source.unsplash.com'],
     formats: ['image/avif', 'image/webp'],

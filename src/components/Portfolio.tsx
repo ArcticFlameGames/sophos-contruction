@@ -9,7 +9,6 @@ import { useTranslations } from 'next-intl';
 // Placeholder images - replace these with your actual images
 const kitchenBefore = "/images/kitchen-before.jpg";
 const kitchenAfter = "/images/kitchen-after.jpg";
-const basementBefore = "/images/basement-before.jpg";
 const basementAfter = "/images/basement-after.jpg";
 const exteriorBefore = "/images/matts-place/old.jpg";
 const exteriorAfter = "/images/matts-place/new.jpg";
@@ -54,7 +53,7 @@ type PortfolioItem = {
   type: string;
 };
 
-const BeforeAfterCard = ({ item, index, t }: { item: PortfolioItem, index: number, t: any }) => {
+const BeforeAfterCard = ({ item, index, t }: { item: PortfolioItem, index: number, t: (key: string) => string }) => {
   const hasBeforeImage = item.before !== undefined;
   
   return (

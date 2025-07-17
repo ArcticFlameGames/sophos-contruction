@@ -23,7 +23,7 @@ export default async function LocaleLayout({
   const { locale } = await Promise.resolve(params);
   
   // Validate the locale
-  if (!locales.includes(locale as any)) {
+  if (!locales.includes(locale as (typeof locales)[number])) {
     notFound();
   }
 

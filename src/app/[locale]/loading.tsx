@@ -1,4 +1,4 @@
-import { LoadingSkeleton, CardSkeleton } from '@/components/loading-skeleton';
+// Loading skeleton component for the loading state
 
 export default function Loading() {
   return (
@@ -16,7 +16,12 @@ export default function Loading() {
           <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded-lg w-1/3 max-w-xs mb-8"></div>
           <div className="grid md:grid-cols-3 gap-6">
             {[1, 2, 3].map((item) => (
-              <CardSkeleton key={item} />
+              <div key={item} className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+                <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded-lg w-3/4 mb-4"></div>
+                <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded-lg w-full mb-3"></div>
+                <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded-lg w-5/6 mb-3"></div>
+                <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded-lg w-2/3"></div>
+              </div>
             ))}
           </div>
         </div>

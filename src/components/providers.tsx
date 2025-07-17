@@ -5,10 +5,12 @@ import { NextIntlClientProvider } from 'next-intl';
 import { SiteHeader } from '@/components/site-header';
 import { Toaster } from '@/components/ui/toaster';
 
+type Messages = Record<string, string | Record<string, unknown>>;
+
 type ClientProvidersProps = {
   children: ReactNode;
   locale: string;
-  messages: any;
+  messages: Messages;
 };
 
 export function ClientProviders({ children, locale, messages }: ClientProvidersProps) {

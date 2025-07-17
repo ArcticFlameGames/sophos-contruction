@@ -6,9 +6,6 @@ import { Locale } from '@/i18n-config';
 import { usePathname, useRouter } from 'next/navigation';
 import { useCallback } from 'react';
 
-// Import the Messages type from our declarations
-import type { Messages } from 'next-intl';
-
 // Client-side hooks
 export function useLocaleSwitcher() {
   const pathname = usePathname() || '';
