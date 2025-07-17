@@ -11,11 +11,23 @@ export default getRequestConfig(async ({ locale }) => {
       const filePath = path.join(process.cwd(), 'public', 'messages', `${locale}.json`);
       const content = await fs.readFile(filePath, 'utf8');
       const messages = JSON.parse(content);
-      return { locale, messages };
+      return {
+        locale,
+        messages,
+        timeZone: 'UTC',
+        defaultLocale: 'fr',
+        localeDetection: true,
+      };
     }
 
     const messages = (await import(`../../messages/${locale}.json`)).default;
-    return { locale, messages };
+    return {
+      locale,
+      messages,
+      timeZone: 'UTC',
+      defaultLocale: 'fr',
+      localeDetection: true,
+    };
   } catch (error) {
     console.error(`Could not load messages for locale "${locale}":`, error);
     throw error;
