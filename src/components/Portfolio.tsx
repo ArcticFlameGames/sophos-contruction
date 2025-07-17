@@ -105,7 +105,7 @@ const BeforeAfterCard = ({ item, index, t }: { item: PortfolioItem, index: numbe
   );
 };
 
-export const Portfolio = () => {
+const Portfolio = () => {
   const t = useTranslations('portfolio');
   
   return (
