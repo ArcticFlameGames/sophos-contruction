@@ -1,6 +1,15 @@
 [build]
   command = "npm install --legacy-peer-deps && npm run build"
   publish = ".next"
+  
+# Include the public directory in the build output
+[[build.processing.included_files]]
+  path = "public/messages/**"
+  
+# Copy the public directory to the publish directory
+[[build.processing.copy]]
+  from = "public"
+  to = "public"
 
 [build.environment]
   NODE_VERSION = "20"

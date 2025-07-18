@@ -18,26 +18,37 @@ function readJsonFile(filePath: string) {
 
 // Helper function to find the messages file
 async function getMessages(locale: string) {
-  // For static generation and server-side rendering, always use the filesystem
+  // Try different possible locations for the locale files
   const possiblePaths = [
+    // Production build location (copied by our build script)
+    path.join(process.cwd(), '.next/static/messages', `${locale}.json`),
+    // Public directory (for development)
     path.join(process.cwd(), 'public/messages', `${locale}.json`),
+    // Root messages directory (alternative location)
     path.join(process.cwd(), 'messages', `${locale}.json`),
   ];
 
+  // Try each path
   for (const filePath of possiblePaths) {
-    const messages = readJsonFile(filePath);
-    if (messages) {
-      console.log(`Found messages for ${locale} at: ${filePath}`);
-      return messages;
+    try {
+      const messages = readJsonFile(filePath);
+      if (messages) {
+        console.log(`Found messages for ${locale} at: ${filePath}`);
+        return messages;
+      }
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      console.warn(`Error reading ${filePath}:`, errorMessage);
     }
   }
   
-  // Only try to fetch in browser environment
+  // As a last resort, try to fetch from the public URL in the browser
   if (typeof window !== 'undefined' && process.env.NODE_ENV === 'production') {
     try {
       const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://sophos-contruction.netlify.app';
       const response = await fetch(`${baseUrl}/messages/${locale}.json`);
       if (response.ok) {
+        console.log(`Fetched messages for ${locale} from ${baseUrl}/messages/${locale}.json`);
         return await response.json();
       }
     } catch (error) {
