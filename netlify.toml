@@ -9,7 +9,7 @@
   YARN_PRODUCTION = "false"
   CI = "false"
   
-# Ensure the messages directory is included in the build output
+# Configure the Next.js plugin with custom includes
 [[plugins]]
   package = "@netlify/plugin-nextjs"
   [plugins.inputs]
@@ -23,9 +23,6 @@
 
 [context.branch-deploy.environment]
   NODE_ENV = "production"
-
-[[plugins]]
-  package = "@netlify/plugin-nextjs"
 
 [[headers]]
   for = "/*"
