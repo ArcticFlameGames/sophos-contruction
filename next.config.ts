@@ -1,10 +1,7 @@
-import type { NextConfig } from 'next';
-import createNextIntlPlugin from 'next-intl/plugin';
+// @ts-check
 
-// Configure next-intl with your i18n config
-const withNextIntl = createNextIntlPlugin('./src/lib/i18n.ts');
-
-const nextConfig: NextConfig = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   reactStrictMode: true,
   images: {
     remotePatterns: [
@@ -39,7 +36,7 @@ const nextConfig: NextConfig = {
       },
     ];
   },
-  webpack: (config, { isServer }) => {
+  webpack: (config: any, { isServer }: { isServer: boolean }) => {
     // Add file loader for static files
     config.module.rules.push({
       test: /\.(png|jpe?g|gif|svg|eot|ttf|woff|woff2)$/i,
@@ -84,4 +81,7 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default withNextIntl(nextConfig);
+// Configure next-intl plugin
+const withNextIntl = require('next-intl/plugin')('./src/lib/i18n.ts');
+
+module.exports = withNextIntl(nextConfig);
