@@ -7,21 +7,17 @@
   path = "public/messages/*.json"
   for = "deploy"
 
-# Copy messages to the correct location during build
+# Configure the Next.js plugin
 [[plugins]]
   package = "@netlify/plugin-nextjs"
   
-# Ensure the messages directory is included in the build output
+# Build environment settings
 [build.environment]
   NODE_VERSION = "20"
   NPM_FLAGS = "--legacy-peer-deps"
   NPM_CONFIG_PRODUCTION = "false"
   YARN_PRODUCTION = "false"
   CI = "false"
-
-# Configure the Next.js plugin with custom includes
-[[plugins]]
-  package = "@netlify/plugin-nextjs"
 
 [context.production.environment]
   NODE_ENV = "production"
