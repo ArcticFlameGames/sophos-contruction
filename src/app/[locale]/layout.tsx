@@ -34,14 +34,21 @@ export default async function LocaleLayout({ children, params }: LayoutProps) {
 
   let messages;
   try {
-    // Try to read from public directory first
-    const publicPath = join(process.cwd(), 'public', 'messages', `${locale}.json`);
-    messages = readJsonFile(publicPath);
-
-    // If not found in public, try root messages directory
-    if (!messages) {
-      const rootPath = join(process.cwd(), 'messages', `${locale}.json`);
-      messages = readJsonFile(rootPath);
+    // In production, fetch from the public URL
+    if (process.env.NODE_ENV === 'production') {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL || 'https://sophos-contruction.netlify.app'}/messages/${locale}.json`);
+      if (response.ok) {
+        messages = await response.json();
+      }
+    } else {
+      // In development, read from the local filesystem
+      const publicPath = join(process.cwd(), 'public', 'messages', `${locale}.json`);
+      messages = readJsonFile(publicPath);
+      
+      if (!messages) {
+        const rootPath = join(process.cwd(), 'messages', `${locale}.json`);
+        messages = readJsonFile(rootPath);
+      }
     }
 
     if (!messages) {

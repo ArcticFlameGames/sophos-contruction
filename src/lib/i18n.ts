@@ -17,19 +17,30 @@ function readJsonFile(filePath: string) {
 }
 
 // Helper function to find the messages file
-function getMessages(locale: string) {
-  // Try to find the messages file in different locations
+async function getMessages(locale: string) {
+  // In production, fetch from the public URL
+  if (process.env.NODE_ENV === 'production') {
+    try {
+      const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://sophos-contruction.netlify.app';
+      const response = await fetch(`${baseUrl}/messages/${locale}.json`);
+      if (response.ok) {
+        return await response.json();
+      }
+    } catch (error) {
+      console.error(`Error fetching messages for ${locale}:`, error);
+    }
+  }
+  
+  // In development, try local files
   const possiblePaths = [
-    path.join(process.cwd(), 'public/messages', `${locale}.json`),  // Development
-    path.join(process.cwd(), '.next/static/messages', `${locale}.json`),  // Production
-    path.join(process.cwd(), '.next/server/app/[locale]/.next/static/messages', `${locale}.json`),  // Netlify
-    path.join(process.cwd(), 'messages', `${locale}.json`),  // Root messages directory
+    path.join(process.cwd(), 'public/messages', `${locale}.json`),
+    path.join(process.cwd(), 'messages', `${locale}.json`),
   ];
 
   for (const filePath of possiblePaths) {
     const messages = readJsonFile(filePath);
     if (messages) {
-      console.log(`Found messages for ${locale} at: ${filePath}`);
+      console.log(`Found local messages for ${locale} at: ${filePath}`);
       return messages;
     }
   }
