@@ -25,11 +25,21 @@ const nextConfig = {
   env: {
     NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000',
   },
+  // Copy messages to the correct location during build
+  async rewrites() {
+    return [
+      {
+        source: '/messages/:path*',
+        destination: '/_next/static/messages/:path*',
+      },
+    ];
+  },
+  
   // Ensure static files in public are served
   async headers() {
     return [
       {
-        source: '/messages/:path*',
+        source: '/_next/static/messages/:path*',
         headers: [
           {
             key: 'Cache-Control',
