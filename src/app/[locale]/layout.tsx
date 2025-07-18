@@ -34,33 +34,47 @@ export default async function LocaleLayout({ children, params }: LayoutProps) {
 
   let messages;
   try {
-    // Try different possible locations for the locale files
-    const possiblePaths = [
-      // Production build location (copied by our build script)
-      join(process.cwd(), 'public/messages', `${locale}.json`),
-      // Alternative location in public directory
-      join(process.cwd(), 'public', 'messages', `${locale}.json`),
-      // Root messages directory
-      join(process.cwd(), 'messages', `${locale}.json`),
-      // .next/static/messages directory
-      join(process.cwd(), '.next', 'static', 'messages', `${locale}.json`),
-      // Netlify function path
-      join(process.cwd(), '..', '..', 'public', 'messages', `${locale}.json`)
-    ];
-
-    // Try each path until we find the messages
-    for (const filePath of possiblePaths) {
+    // In production, we'll use the public URL to fetch the locale file
+    if (process.env.NODE_ENV === 'production') {
+      const publicUrl = process.env.NEXT_PUBLIC_SITE_URL || '';
+      const url = `${publicUrl}/messages/${locale}.json`;
+      console.log(`🌐 Fetching locale file from: ${url}`);
+      
       try {
-        console.log(`Looking for locale file at: ${filePath}`);
-        const fileContents = readJsonFile(filePath);
-        if (fileContents) {
-          console.log(`Found locale file at: ${filePath}`);
-          messages = fileContents;
-          break;
+        const response = await fetch(url);
+        if (response.ok) {
+          messages = await response.json();
+          console.log(`✅ Successfully loaded ${locale} messages`);
+        } else {
+          console.warn(`Failed to fetch ${url}: ${response.status} ${response.statusText}`);
         }
-      } catch (error: unknown) {
-        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-        console.warn(`Error reading ${filePath}:`, errorMessage);
+      } catch (error) {
+        console.error(`Error fetching locale file:`, error);
+      }
+    }
+    
+    // If we're in development or the fetch failed, try local files
+    if (!messages) {
+      const possiblePaths = [
+        // Public directory (works in both dev and prod)
+        join(process.cwd(), 'public', 'messages', `${locale}.json`),
+        // Root messages directory
+        join(process.cwd(), 'messages', `${locale}.json`),
+      ];
+
+      for (const filePath of possiblePaths) {
+        try {
+          console.log(`🔍 Looking for locale file at: ${filePath}`);
+          const fileContents = readJsonFile(filePath);
+          if (fileContents) {
+            console.log(`✅ Found locale file at: ${filePath}`);
+            messages = fileContents;
+            break;
+          }
+        } catch (error: unknown) {
+          const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+          console.warn(`⚠️ Error reading ${filePath}:`, errorMessage);
+        }
       }
     }
 

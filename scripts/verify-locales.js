@@ -3,74 +3,55 @@ const path = require('path');
 const { promisify } = require('util');
 
 const readdir = promisify(fs.readdir);
-const stat = promisify(fs.stat);
+const exists = promisify(fs.exists);
 
-async function checkDirectory(dirPath) {
-  try {
-    const stats = await stat(dirPath);
-    return stats.isDirectory();
-  } catch (error) {
-    return false;
-  }
-}
-
-async function listFiles(dir) {
-  try {
-    const files = await readdir(dir);
-    return files;
-  } catch (error) {
-    return [];
-  }
-}
-
-async function verifyLocales() {
-  console.log('Verifying locale files...');
-  
+// In a Netlify build, the files will be in the public directory
+// because we can't rely on the .next directory persisting
+async function checkLocaleFiles() {
+  console.log(' Verifying locale files...');
   const baseDir = process.cwd();
-  const locales = ['fr', 'en']; // Add other locales as needed
   
-  // Check public/messages
+  // Check public/messages directory
   const publicMessagesDir = path.join(baseDir, 'public/messages');
-  const hasPublicMessages = await checkDirectory(publicMessagesDir);
-  console.log(`Public messages directory exists: ${hasPublicMessages}`);
+  const publicDirExists = await exists(publicMessagesDir);
   
-  if (hasPublicMessages) {
-    const files = await listFiles(publicMessagesDir);
-    console.log(`Files in public/messages: ${files.join(', ') || 'None'}`);
-  }
+  console.log(` Public messages directory exists: ${publicDirExists ? ' ' : ' '}`);
   
-  // Check .next/static/messages
-  const staticMessagesDir = path.join(baseDir, '.next/static/messages');
-  const hasStaticMessages = await checkDirectory(staticMessagesDir);
-  console.log(`Static messages directory exists: ${hasStaticMessages}`);
-  
-  if (hasStaticMessages) {
-    const files = await listFiles(staticMessagesDir);
-    console.log(`Files in .next/static/messages: ${files.join(', ') || 'None'}`);
-  }
-  
-  // Check each locale file
-  for (const locale of locales) {
-    const fileName = `${locale}.json`;
-    const paths = [
-      path.join(publicMessagesDir, fileName),
-      path.join(staticMessagesDir, fileName),
-      path.join(baseDir, 'messages', fileName)
-    ];
-    
-    console.log(`\nChecking locale: ${locale}`);
-    for (const filePath of paths) {
-      try {
-        await stat(filePath);
-        console.log(`✅ Found: ${filePath}`);
-      } catch (error) {
-        console.log(`❌ Missing: ${filePath}`);
-      }
+  if (publicDirExists) {
+    try {
+      const files = await readdir(publicMessagesDir);
+      console.log(`Files in public/messages: ${files.join(', ')}`);
+    } catch (error) {
+      console.error('Error reading public/messages directory:', error.message);
     }
   }
+  
+  // Check for required locale files
+  const requiredLocales = ['en', 'fr'];
+  let allFilesExist = true;
+  
+  for (const locale of requiredLocales) {
+    const filePath = path.join(publicMessagesDir, `${locale}.json`);
+    const fileExists = await exists(filePath);
+    
+    console.log(`\n Checking ${locale}.json:`);
+    console.log(`   ${filePath} - ${fileExists ? ' Found' : ' Missing'}`);
+    
+    if (!fileExists) {
+      allFilesExist = false;
+    }
+  }
+  
+  if (allFilesExist) {
+    console.log('\n All required locale files are present in the public directory');
+  } else {
+    console.error('\n Some required locale files are missing from the public directory');
+    process.exit(1);
+  }
 }
 
-verifyLocales().catch(error => {
-  console.error('Error verifying locales:', error);
+// Run the verification
+checkLocaleFiles().catch(error => {
+  console.error(' Error during locale verification:', error.message);
   process.exit(1);
 });
