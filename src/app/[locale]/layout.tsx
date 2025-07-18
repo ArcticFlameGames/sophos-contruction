@@ -34,44 +34,51 @@ export default async function LocaleLayout({ children, params }: LayoutProps) {
 
   let messages;
   try {
-    // In production, we'll use the public URL to fetch the locale file
+    // In production, first try to read from the public directory
     if (process.env.NODE_ENV === 'production') {
-      const publicUrl = process.env.NEXT_PUBLIC_SITE_URL || '';
-      const url = `${publicUrl}/messages/${locale}.json`;
-      console.log(`🌐 Fetching locale file from: ${url}`);
-      
-      try {
-        const response = await fetch(url);
-        if (response.ok) {
-          messages = await response.json();
-          console.log(`✅ Successfully loaded ${locale} messages`);
-        } else {
-          console.warn(`Failed to fetch ${url}: ${response.status} ${response.statusText}`);
-        }
-      } catch (error) {
-        console.error(`Error fetching locale file:`, error);
-      }
-    }
-    
-    // If we're in development or the fetch failed, try local files
-    if (!messages) {
       const possiblePaths = [
-        // Public directory (works in both dev and prod)
-        join(process.cwd(), 'public', 'messages', `${locale}.json`),
-        // Root messages directory
-        join(process.cwd(), 'messages', `${locale}.json`),
+        // Try the public directory first (for Netlify)
+        '/var/task/public/messages',
+        // Fallback to process.cwd() for other environments
+        join(process.cwd(), 'public', 'messages'),
+        // Also check the root messages directory
+        join(process.cwd(), 'messages')
       ];
 
-      for (const filePath of possiblePaths) {
+      for (const basePath of possiblePaths) {
+        const filePath = join(basePath, `${locale}.json`);
         try {
-          console.log(`🔍 Looking for locale file at: ${filePath}`);
+          console.log(`🔍 [Production] Looking for locale file at: ${filePath}`);
           const fileContents = readJsonFile(filePath);
           if (fileContents) {
-            console.log(`✅ Found locale file at: ${filePath}`);
+            console.log(`✅ Found production locale file at: ${filePath}`);
             messages = fileContents;
             break;
           }
-        } catch (error: unknown) {
+        } catch (error) {
+          const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+          console.warn(`⚠️ Error reading ${filePath}:`, errorMessage);
+        }
+      }
+    }
+
+    // If not in production or if production lookup failed, try development paths
+    if (!messages) {
+      const devPaths = [
+        join(process.cwd(), 'public', 'messages', `${locale}.json`),
+        join(process.cwd(), 'messages', `${locale}.json`)
+      ];
+
+      for (const filePath of devPaths) {
+        try {
+          console.log(`🔍 [Development] Looking for locale file at: ${filePath}`);
+          const fileContents = readJsonFile(filePath);
+          if (fileContents) {
+            console.log(`✅ Found development locale file at: ${filePath}`);
+            messages = fileContents;
+            break;
+          }
+        } catch (error) {
           const errorMessage = error instanceof Error ? error.message : 'Unknown error';
           console.warn(`⚠️ Error reading ${filePath}:`, errorMessage);
         }

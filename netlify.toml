@@ -4,13 +4,20 @@
 
 # Include the public directory in the build output
 [[build.include]]
-  path = "public/**"
-  for = "deploy"
-
-# Ensure the public directory is preserved in the build output
-[[build.include]]
   from = "public"
   to = "public"
+  status = 200
+
+# Ensure all files in public are included
+[[build.include]]
+  from = "public/**"
+  to = "/"
+  status = 200
+
+# Include the messages directory specifically
+[[build.include]]
+  from = "public/messages/*.json"
+  to = "/messages/"
   status = 200
   force = true
 
