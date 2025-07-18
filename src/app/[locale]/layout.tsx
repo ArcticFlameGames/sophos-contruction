@@ -34,20 +34,25 @@ export default async function LocaleLayout({ children, params }: LayoutProps) {
 
   let messages;
   try {
-    // In production, fetch from the public URL
-    if (process.env.NODE_ENV === 'production') {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL || 'https://sophos-contruction.netlify.app'}/messages/${locale}.json`);
-      if (response.ok) {
-        messages = await response.json();
-      }
-    } else {
-      // In development, read from the local filesystem
-      const publicPath = join(process.cwd(), 'public', 'messages', `${locale}.json`);
-      messages = readJsonFile(publicPath);
-      
-      if (!messages) {
-        const rootPath = join(process.cwd(), 'messages', `${locale}.json`);
-        messages = readJsonFile(rootPath);
+    // First try to read from the filesystem (works in both dev and production)
+    const publicPath = join(process.cwd(), 'public', 'messages', `${locale}.json`);
+    messages = readJsonFile(publicPath);
+    
+    if (!messages) {
+      const rootPath = join(process.cwd(), 'messages', `${locale}.json`);
+      messages = readJsonFile(rootPath);
+    }
+    
+    // If we're in the browser and still don't have messages, try to fetch
+    if (!messages && typeof window !== 'undefined') {
+      try {
+        const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://sophos-contruction.netlify.app';
+        const response = await fetch(`${baseUrl}/messages/${locale}.json`);
+        if (response.ok) {
+          messages = await response.json();
+        }
+      } catch (error) {
+        console.error(`Error fetching messages for ${locale}:`, error);
       }
     }
 
