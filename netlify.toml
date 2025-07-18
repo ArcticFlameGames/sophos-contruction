@@ -2,22 +2,31 @@
   command = "npm install --legacy-peer-deps && npm run build"
   publish = ".next"
 
-# Include the public directory in the build output
+# Include all necessary files in the build
 [[build.include]]
+  # Include the entire public directory
   from = "public"
-  to = "public"
-  status = 200
-
-# Ensure all files in public are included
-[[build.include]]
-  from = "public/**"
   to = "/"
   status = 200
 
-# Include the messages directory specifically
+# Ensure the messages directory is included at the root
+[[build.include]]
+  from = "public/messages"
+  to = "/messages"
+  status = 200
+  force = true
+
+# Include individual JSON files in the messages directory
 [[build.include]]
   from = "public/messages/*.json"
   to = "/messages/"
+  status = 200
+  force = true
+
+# Include the .next/static directory for static assets
+[[build.include]]
+  from = ".next/static"
+  to = "/_next/static"
   status = 200
   force = true
 
