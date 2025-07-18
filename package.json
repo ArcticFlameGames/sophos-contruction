@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "npm run copy:messages && next build && npm run verify:locales",
+    "prebuild": "node scripts/copy-messages.js",
+    "build": "next build",
+    "postbuild": "node scripts/verify-locales.js",
     "copy:messages": "node scripts/copy-messages.js",
     "verify:locales": "node scripts/verify-locales.js",
     "start": "next start",
