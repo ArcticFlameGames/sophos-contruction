@@ -8,12 +8,10 @@
   NPM_CONFIG_PRODUCTION = "false"
   YARN_PRODUCTION = "false"
   CI = "false"
-  
+
 # Configure the Next.js plugin with custom includes
 [[plugins]]
   package = "@netlify/plugin-nextjs"
-  [plugins.inputs]
-    include = ["public/messages/**"]
 
 [context.production.environment]
   NODE_ENV = "production"
