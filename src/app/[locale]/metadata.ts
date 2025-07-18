@@ -7,7 +7,6 @@ type Props = {
 
 export async function generateMetadata({ params: { locale } }: Props): Promise<Metadata> {
   const messages = (await import(`@/messages/${locale}.json`)).default;
-  
   return {
     title: {
       default: messages.metadata?.title || 'Sophos Construction',
@@ -44,11 +43,7 @@ export async function generateMetadata({ params: { locale } }: Props): Promise<M
       icon: '/favicon.ico',
       shortcut: '/favicon-16x16.png',
       apple: '/apple-touch-icon.png',
-    },
-    themeColor: [
-      { media: '(prefers-color-scheme: light)', color: '#ffffff' },
-      { media: '(prefers-color-scheme: dark)', color: '#1a1a1a' },
-    ],
+    }
   };
 }
 

@@ -17,8 +17,6 @@ export const metadata: Metadata = {
     ],
   },
   manifest: '/site.webmanifest',
-  themeColor: '#ffffff',
-  viewport: 'width=device-width, initial-scale=1',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
@@ -38,7 +36,6 @@ export default function RootLayout({
     <html lang="en" className={`${inter.variable} font-sans`} suppressHydrationWarning>
       <head>
         <link rel="manifest" href="/site.webmanifest" />
-        <meta name="theme-color" content="#ffffff" />
       </head>
       <body className="min-h-screen bg-background font-sans antialiased">
         {children}

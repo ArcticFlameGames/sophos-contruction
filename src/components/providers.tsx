@@ -18,7 +18,6 @@ export function ClientProviders({ children, locale, messages }: ClientProvidersP
     <NextIntlClientProvider 
       locale={locale}
       messages={messages}
-      timeZone="America/Montreal"
     >
       <div className="relative flex min-h-screen flex-col bg-white">
         <SiteHeader />

@@ -23,7 +23,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps) {
 
   let messages;
   try {
-    const messagesPath = join(process.cwd(), 'messages', `${locale}.json`);
+    const messagesPath = join(process.cwd(), 'public', 'messages', `${locale}.json`);
     const messagesFile = readFileSync(messagesPath, 'utf-8');
     messages = JSON.parse(messagesFile);
   } catch {
