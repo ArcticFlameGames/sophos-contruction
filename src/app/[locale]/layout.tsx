@@ -34,31 +34,33 @@ export default async function LocaleLayout({ children, params }: LayoutProps) {
 
   let messages;
   try {
-    // In production, the files should be in the public directory
-    if (process.env.NODE_ENV === 'production') {
-      // Try to read from the public directory first
-      const publicPath = join(process.cwd(), 'public', 'messages', `${locale}.json`);
-      messages = readJsonFile(publicPath);
-      
-      // If not found in public, try the root messages directory
-      if (!messages) {
-        const rootPath = join(process.cwd(), 'messages', `${locale}.json`);
-        messages = readJsonFile(rootPath);
-      }
-      
-      // If still not found, try the .next/static/messages directory
-      if (!messages) {
-        const staticPath = join(process.cwd(), '.next', 'static', 'messages', `${locale}.json`);
-        messages = readJsonFile(staticPath);
-      }
-    } else {
-      // In development, just use the local files
-      const publicPath = join(process.cwd(), 'public', 'messages', `${locale}.json`);
-      messages = readJsonFile(publicPath);
-      
-      if (!messages) {
-        const rootPath = join(process.cwd(), 'messages', `${locale}.json`);
-        messages = readJsonFile(rootPath);
+    // Try different possible locations for the locale files
+    const possiblePaths = [
+      // Production build location (copied by our build script)
+      join(process.cwd(), 'public/messages', `${locale}.json`),
+      // Alternative location in public directory
+      join(process.cwd(), 'public', 'messages', `${locale}.json`),
+      // Root messages directory
+      join(process.cwd(), 'messages', `${locale}.json`),
+      // .next/static/messages directory
+      join(process.cwd(), '.next', 'static', 'messages', `${locale}.json`),
+      // Netlify function path
+      join(process.cwd(), '..', '..', 'public', 'messages', `${locale}.json`)
+    ];
+
+    // Try each path until we find the messages
+    for (const filePath of possiblePaths) {
+      try {
+        console.log(`Looking for locale file at: ${filePath}`);
+        const fileContents = readJsonFile(filePath);
+        if (fileContents) {
+          console.log(`Found locale file at: ${filePath}`);
+          messages = fileContents;
+          break;
+        }
+      } catch (error: unknown) {
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        console.warn(`Error reading ${filePath}:`, errorMessage);
       }
     }
 
