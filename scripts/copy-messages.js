@@ -57,10 +57,9 @@ async function copyMessages() {
     path.join(baseDir, 'messages')
   ];
 
-  // Ensure the target directories exist
+  // Only copy to .next/static/messages to avoid conflicts with Next.js
   const targetDirs = [
-    path.join(baseDir, '.next/static/messages'),
-    path.join(baseDir, 'public/_next/static/messages')
+    path.join(baseDir, '.next/static/messages')
   ];
 
   let success = true;

@@ -2,14 +2,10 @@
   command = "npm install --legacy-peer-deps && npm run build"
   publish = ".next"
 
-# Include the public directory in the build output
-[[build.processing.included_files]]
+# Include the messages directory in the build output
+[[build.include]]
   path = "public/messages/**"
-
-# Copy the public directory to the publish directory
-[[build.processing.copy]]
-  from = "public"
-  to = "public"
+  for = "deploy"
 
 # Configure the Next.js plugin
 [[plugins]]
