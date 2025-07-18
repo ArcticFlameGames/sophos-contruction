@@ -5,6 +5,17 @@ import { join } from 'path';
 import { locales, isLocale } from '@/i18n-config';
 import { ClientProviders } from '@/components/providers';
 
+// Helper function to read JSON file
+const readJsonFile = (filePath: string) => {
+  try {
+    const fileContent = readFileSync(filePath, 'utf-8');
+    return JSON.parse(fileContent);
+  } catch (error) {
+    console.error(`Error reading file ${filePath}:`, error);
+    return null;
+  }
+};
+
 type LayoutProps = {
   children: ReactNode;
   params: Promise<{ locale: string }>;
@@ -23,10 +34,21 @@ export default async function LocaleLayout({ children, params }: LayoutProps) {
 
   let messages;
   try {
-    const messagesPath = join(process.cwd(), 'public', 'messages', `${locale}.json`);
-    const messagesFile = readFileSync(messagesPath, 'utf-8');
-    messages = JSON.parse(messagesFile);
-  } catch {
+    // Try to read from public directory first
+    const publicPath = join(process.cwd(), 'public', 'messages', `${locale}.json`);
+    messages = readJsonFile(publicPath);
+
+    // If not found in public, try root messages directory
+    if (!messages) {
+      const rootPath = join(process.cwd(), 'messages', `${locale}.json`);
+      messages = readJsonFile(rootPath);
+    }
+
+    if (!messages) {
+      throw new Error(`Could not find messages for locale: ${locale}`);
+    }
+  } catch (error) {
+    console.error(`Failed to load messages for locale ${locale}:`, error);
     notFound();
   }
 

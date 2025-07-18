@@ -25,12 +25,50 @@ const nextConfig: NextConfig = {
   env: {
     NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000',
   },
+  // Ensure static files in public are served
+  async headers() {
+    return [
+      {
+        source: '/messages/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+    ];
+  },
   webpack: (config, { isServer }) => {
+    // Add file loader for static files
     config.module.rules.push({
-      test: /\.svg$/i,
-      issuer: /\.[jt]sx?$/,
-      use: ['@svgr/webpack'],
+      test: /\.(png|jpe?g|gif|svg|eot|ttf|woff|woff2)$/i,
+      type: 'asset/resource',
     });
+
+    // Handle SVG imports
+    const fileLoaderRule = config.module.rules.find((rule: any) =>
+      rule.test?.test?.('.svg')
+    ) as any;
+    
+    if (fileLoaderRule) {
+      config.module.rules.push(
+        {
+          ...fileLoaderRule,
+          test: /\.svg$/i,
+          resourceQuery: /url/, // *.svg?url
+        },
+        {
+          test: /\.svg$/i,
+          issuer: /\.[jt]sx?$/,
+          resourceQuery: { not: /url/ }, // exclude if *.svg?url
+          use: ['@svgr/webpack'],
+        }
+      );
+    }
+
+    // Exclude node modules from being processed by webpack
+    config.externals = [...(config.externals || []), 'fs', 'child_process'];
 
     // Fixes npm packages that depend on `node:` protocol
     config.resolve.fallback = { 
