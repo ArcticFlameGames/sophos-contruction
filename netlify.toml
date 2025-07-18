@@ -31,7 +31,6 @@
 
 [context.branch-deploy.environment]
   NODE_ENV = "production"
-  NODE_ENV = "production"
 
 [[headers]]
   for = "/*"
