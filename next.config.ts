@@ -16,6 +16,9 @@ const nextConfig = {
     ],
     formats: ['image/avif', 'image/webp'],
   },
+  experimental: {
+    serverActions: true,
+  },
   compiler: {
     styledComponents: true,
   },
