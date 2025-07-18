@@ -34,16 +34,35 @@ export default async function LocaleLayout({ children, params }: LayoutProps) {
 
   let messages;
   try {
-    // First try to read from the filesystem (works in both dev and production)
-    const publicPath = join(process.cwd(), 'public', 'messages', `${locale}.json`);
-    messages = readJsonFile(publicPath);
-    
-    if (!messages) {
-      const rootPath = join(process.cwd(), 'messages', `${locale}.json`);
-      messages = readJsonFile(rootPath);
+    // In production, the files should be in the public directory
+    if (process.env.NODE_ENV === 'production') {
+      // Try to read from the public directory first
+      const publicPath = join(process.cwd(), 'public', 'messages', `${locale}.json`);
+      messages = readJsonFile(publicPath);
+      
+      // If not found in public, try the root messages directory
+      if (!messages) {
+        const rootPath = join(process.cwd(), 'messages', `${locale}.json`);
+        messages = readJsonFile(rootPath);
+      }
+      
+      // If still not found, try the .next/static/messages directory
+      if (!messages) {
+        const staticPath = join(process.cwd(), '.next', 'static', 'messages', `${locale}.json`);
+        messages = readJsonFile(staticPath);
+      }
+    } else {
+      // In development, just use the local files
+      const publicPath = join(process.cwd(), 'public', 'messages', `${locale}.json`);
+      messages = readJsonFile(publicPath);
+      
+      if (!messages) {
+        const rootPath = join(process.cwd(), 'messages', `${locale}.json`);
+        messages = readJsonFile(rootPath);
+      }
     }
-    
-    // If we're in the browser and still don't have messages, try to fetch
+
+    // As a last resort, try to fetch from the public URL
     if (!messages && typeof window !== 'undefined') {
       try {
         const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://sophos-contruction.netlify.app';

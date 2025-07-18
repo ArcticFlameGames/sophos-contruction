@@ -1,15 +1,23 @@
 [build]
   command = "npm install --legacy-peer-deps && npm run build"
   publish = ".next"
+
+# Include necessary files in the build
+[[build.include]]
+  path = "public/messages/*.json"
+  for = "deploy"
+
+# Copy messages to the correct location during build
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
   
-# Include the public directory in the build output
-[[build.processing.included_files]]
-  path = "public/messages/**"
-  
-# Copy the public directory to the publish directory
-[[build.processing.copy]]
-  from = "public"
-  to = "public"
+# Ensure the messages directory is included in the build output
+[build.environment]
+  NODE_VERSION = "20"
+  NPM_FLAGS = "--legacy-peer-deps"
+  NPM_CONFIG_PRODUCTION = "false"
+  YARN_PRODUCTION = "false"
+  CI = "false"
 
 [build.environment]
   NODE_VERSION = "20"

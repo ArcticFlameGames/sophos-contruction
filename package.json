@@ -4,8 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build && npm run copy:messages",
+    "build": "npm run copy:messages && next build && npm run verify:locales",
     "copy:messages": "node scripts/copy-messages.js",
+    "verify:locales": "node scripts/verify-locales.js",
     "start": "next start",
     "lint": "next lint"
   },
